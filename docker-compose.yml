@@ -1,0 +1,16 @@
+# Pinned Terraform toolchain for this module repo.
+#
+# Run validation through the container so it never depends on a locally-installed
+# Terraform:
+#   docker compose run --rm terraform -chdir=examples/basic init -backend=false
+#   docker compose run --rm terraform -chdir=examples/basic validate
+#   docker compose run --rm terraform fmt -recursive -check
+services:
+  terraform:
+    build: .
+    working_dir: /work
+    volumes:
+      - .:/work
+    environment:
+      - TF_IN_AUTOMATION=1
+    entrypoint: ["terraform"]

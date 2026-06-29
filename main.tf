@@ -9,21 +9,12 @@ resource "proxmox_vm_qemu" "this" {
   clone          = var.template_name
   full_clone     = true
   onboot         = true
-  agent          = 1
-  # The IP this module reports (outputs.tf) comes entirely from the
-  # ip_config input variable, never from a Terraform-computed, agent-derived
-  # value — so the provider's automatic post-apply connection-info discovery
-  # (which queries the QEMU guest agent's network-get-interfaces) is not
-  # needed and is disabled here. That discovery call requires a privilege
-  # historically named "VM.Monitor" in Proxmox's ACL model; on at least
-  # Proxmox VE 9.2.3 this privilege does not appear in any role's granted
-  # capability set (including a full Administrator/root@pam grant — verified
-  # against the live API), so any module instance with agent = 1 and
-  # define_connection_info left at its default (true) cannot complete an
-  # apply on such hosts. agent stays enabled for genuine guest-agent service
-  # features (graceful shutdown, fsfreeze, exec); only the connection-info
-  # auto-discovery is turned off.
-  define_connection_info = false
+  # See variable "agent_enabled" for why this is sometimes false: on Proxmox
+  # hosts whose roles don't grant the agent-read privilege, agent = 1 makes
+  # plan/apply for a NEW resource fail outright (not just refresh of an
+  # existing one). Default true preserves existing behavior for every
+  # consumer that already works (e.g. dev01).
+  agent          = var.agent_enabled ? 1 : 0
   numa           = true
   machine        = "q35"
   qemu_os        = "other"

@@ -5,10 +5,10 @@ resource "proxmox_vm_qemu" "this" {
   name           = var.vm_name
   target_node    = var.node
   vmid           = var.vm_id
-  desc           = "Cloned from ${var.template_name}"
+  description    = "Cloned from ${var.template_name}"
   clone          = var.template_name
   full_clone     = true
-  onboot         = true
+  start_at_node_boot = true
   # See variable "agent_enabled" for why this is sometimes false: on Proxmox
   # hosts whose roles don't grant the agent-read privilege, agent = 1 makes
   # plan/apply for a NEW resource fail outright (not just refresh of an
@@ -23,7 +23,7 @@ resource "proxmox_vm_qemu" "this" {
   bios           = var.bios  # Force UEFI (ovmf) to match template
   cores          = var.cores
   sockets        = var.sockets
-  cpu            = var.cpu_type
+  cpu_type       = var.cpu_type
   memory         = var.memory
 
   # Storage: EFI and cloud-init disk
@@ -49,6 +49,7 @@ resource "proxmox_vm_qemu" "this" {
 
   # Network
   network {
+    id     = 0
     bridge = var.network_bridge
     model  = "virtio"
   }

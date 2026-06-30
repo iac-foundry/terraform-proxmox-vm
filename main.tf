@@ -9,12 +9,7 @@ resource "proxmox_vm_qemu" "this" {
   clone          = var.template_name
   full_clone     = true
   start_at_node_boot = true
-  # See variable "agent_enabled" for why this is sometimes false: on Proxmox
-  # hosts whose roles don't grant the agent-read privilege, agent = 1 makes
-  # plan/apply for a NEW resource fail outright (not just refresh of an
-  # existing one). Default true preserves existing behavior for every
-  # consumer that already works (e.g. dev01).
-  agent          = var.agent_enabled ? 1 : 0
+  agent          = 1
   numa           = true
   machine        = "q35"
   qemu_os        = "other"

@@ -129,21 +129,3 @@ variable "ci_password" {
   default     = null
 }
 
-variable "agent_enabled" {
-  description = <<-EOT
-    Whether to enable QEMU guest agent integration (graceful shutdown,
-    fsfreeze-consistent snapshots, exec). Defaults to true, matching prior
-    behavior for all existing consumers. Set to false only if your Proxmox
-    host's role/ACL model doesn't grant the privilege the provider's
-    guest-agent read requires (historically named "VM.Monitor") — on some
-    Proxmox VE 9.x installs this privilege does not appear in any role's
-    granted capability set, including a full Administrator/root@pam grant,
-    which causes plan/apply to fail for new resources with:
-      "permissions for user/token <X> are not sufficient ... [VM.Monitor]"
-    This module's own ipv4_address output never depends on the agent (it's
-    derived solely from ip_config), so disabling it costs nothing
-    functionally beyond losing the agent-dependent features above.
-  EOT
-  type        = bool
-  default     = true
-}

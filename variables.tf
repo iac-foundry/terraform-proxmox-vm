@@ -17,12 +17,6 @@ variable "template_name" {
   default     = "ubuntu-24.04-template"
 }
 
-variable "template_vm_id" {
-  description = "Explicit template VMID. If set, skips the name lookup."
-  type        = number
-  default     = null
-}
-
 variable "vm_id" {
   description = "Explicit VMID for the new VM. Auto-assigned by Proxmox if null."
   type        = number
@@ -59,11 +53,6 @@ variable "disk_size" {
   default     = 20
 }
 
-variable "disk_interface" {
-  description = "Primary disk interface. Must match the template (packer-template-proxmox uses virtio0)."
-  type        = string
-  default     = "virtio0"
-}
 
 variable "datastore_id" {
   description = "Datastore for the VM disk, EFI disk, and cloud-init drive."
@@ -122,10 +111,4 @@ variable "tags" {
   default     = []
 }
 
-variable "ci_password" {
-  description = "Password for the cloud-init user (for debugging/fallback; SSH keys preferred)."
-  type        = string
-  sensitive   = true
-  default     = null
-}
 

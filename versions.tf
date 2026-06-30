@@ -4,7 +4,7 @@ terraform {
 
   required_providers {
     proxmox = {
-      source  = "telmate/proxmox"
+      source = "telmate/proxmox"
       # 3.0.1-rc3 checks for the Proxmox privilege "VM.Monitor" on every
       # plan/apply for any proxmox_vm_qemu resource. Proxmox VE 9.x removed
       # that privilege (replaced by granular VM.GuestAgent.* privileges) but
